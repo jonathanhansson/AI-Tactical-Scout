@@ -20,7 +20,7 @@ def ingest_txt_files_to_vector_db(table):
             }
         ])
 
-        print(table.to_pandas()["filename"])
+        # print(table.to_pandas()["filename"])
         time.sleep(2)
 
 
