@@ -9,7 +9,7 @@ embedding_model = get_registry().get("gemini-text").create(name="gemini-embeddin
 DIM = 3072
 
 class Player(BaseModel):
-    player_name: str = Field(description="This is a player name. It consists of surname and last name, e.g. Carl Johnson.")
+    player_name: str = Field(description="This is a player name. It consists of first name and last name, e.g. Carl Johnson.")
     age: int = Field(lt=50, gt=15, description="Player age must be between 16 and 49. E.g. 20, 27, 32, 24, or something else.")
     nationality: str = Field(description="E.g. Spain or Italy.")
     position: str = Field(description="A position on the field. Here are some examples: 'Striker', 'Central Midfielder', 'Wing Back'.")
