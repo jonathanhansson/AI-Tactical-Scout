@@ -1,5 +1,5 @@
 from pydantic_ai import Agent
-from backend.data_models import RagResponse
+from backend.data_models import RagResponse, PlayerShowcase
 from backend.constants import VECTOR_DB_PATH
 from dotenv import load_dotenv
 
@@ -37,3 +37,38 @@ def retrieve_first_and_second_pick(query: str, k=2):
     Filepath: {top_result["filepath"]},
     Answer: {top_result["scouting_report"]}
     """
+
+
+random_player_retriever = Agent(
+    model="google-gla:gemini-2.5-flash",
+    retries=2,
+    system_prompt=(
+        "You are supposed to pick a random player from our vector database.",
+        "Your choice is supposed to be completely random and not biased in any way towards a certain nationality."
+    ),
+    output_type=PlayerShowcase
+)
+
+
+@random_player_retriever.tool_plain
+def retrieve_random_player(query: str) -> dict:
+    result = vector_db["players"].search(query=query).to_list()
+
+    return result
+
+
+
+def search_players(query: str, k: int = 5):
+    results = vector_db["players"].search(query=query).limit(k).to_list()
+    # returnera “lätta” objekt till frontend
+    return [
+        {
+            "player_name": r["player_name"],
+            "filepath": r["filepath"],
+            "nationality": r.get("nationality"),
+            "position": r.get("position"),
+            "age": r.get("age"),
+            "preview": (r["scouting_report"][:300] + "...") if r.get("scouting_report") else None,
+        }
+        for r in results
+    ]
