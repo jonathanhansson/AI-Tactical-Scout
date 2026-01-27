@@ -42,4 +42,8 @@ class PlayerShowcase(BaseModel):
     position: str = Field(description="Show players position")
     current_club: str = Field(description="Show players current club")
     asking_price: str = Field(description="Show players asking price")
+    match_percent: float = Field(description="How well the player matches the prompt (0-100)")
     
+
+class PlayerShowcaseList(BaseModel):
+    players: list[PlayerShowcase] = Field(description="List of 5 players to show")

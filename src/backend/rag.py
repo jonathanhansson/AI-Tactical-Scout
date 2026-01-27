@@ -1,5 +1,5 @@
 from pydantic_ai import Agent
-from backend.data_models import RagResponse, PlayerShowcase
+from backend.data_models import RagResponse, PlayerShowcase, PlayerShowcaseList
 from backend.constants import VECTOR_DB_PATH
 from dotenv import load_dotenv
 
@@ -39,36 +39,40 @@ def retrieve_first_and_second_pick(query: str, k=2):
     """
 
 
+# random_player_retriever = Agent(
+#     model="google-gla:gemini-2.5-flash",
+#     retries=2,
+#     system_prompt=(
+#         "You are supposed to pick a random player from our vector database.",
+#         "Your choice is supposed to be completely random and not biased in any way towards a certain nationality.",
+#         "Use the tool retrieve_random_player to get candidates.",
+#         "When you output the player, copy match_percent from the chosen candidate (do not invent it)."
+#     ),
+#     output_type=PlayerShowcase
+# )
+
+# @random_player_retriever.tool_plain
+# def retrieve_random_player(query: str) -> dict:
+#     result = vector_db["players"].search(query=query).to_list()
+
+#     return result
+
+
 random_player_retriever = Agent(
     model="google-gla:gemini-2.5-flash",
     retries=2,
     system_prompt=(
-        "You are supposed to pick a random player from our vector database.",
-        "Your choice is supposed to be completely random and not biased in any way towards a certain nationality."
+        "You are supposed to pick 5 random players from our vector database.",
+        "Your choice is supposed to be completely random and not biased in any way towards a certain nationality.",
+        "Use the tool retrieve_random_player to get candidates.",
+        "Return exactly 5 players in the 'players' field.",
+        "When you output each player, copy match_percent from the chosen candidate (do not invent it)."
     ),
-    output_type=PlayerShowcase
+    output_type=PlayerShowcaseList
 )
-
 
 @random_player_retriever.tool_plain
 def retrieve_random_player(query: str) -> dict:
-    result = vector_db["players"].search(query=query).to_list()
-
-    return result
-
-
-
-def search_players(query: str, k: int = 5):
-    results = vector_db["players"].search(query=query).limit(k).to_list()
-    # returnera “lätta” objekt till frontend
-    return [
-        {
-            "player_name": r["player_name"],
-            "filepath": r["filepath"],
-            "nationality": r.get("nationality"),
-            "position": r.get("position"),
-            "age": r.get("age"),
-            "preview": (r["scouting_report"][:300] + "...") if r.get("scouting_report") else None,
-        }
-        for r in results
-    ]
+    # Ta en kandidatpool (t.ex. 30) så modellen kan välja 5 slumpmässigt
+    candidates = vector_db["players"].search(query=query).limit(4).to_list()
+    return {"candidates": candidates}
