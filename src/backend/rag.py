@@ -1,6 +1,6 @@
 from pydantic_ai import Agent
-from data_models import RagResponse
-from constants import VECTOR_DB_PATH
+from data_models import RagResponse, PlayerShowcase, PlayerShowcaseList
+from constants import VECTOR_DB_PATH 
 from dotenv import load_dotenv
 
 import lancedb
@@ -37,3 +37,42 @@ def retrieve_first_and_second_pick(query: str, k=2):
     Filepath: {top_result["filepath"]},
     Answer: {top_result["scouting_report"]}
     """
+
+
+# random_player_retriever = Agent(
+#     model="google-gla:gemini-2.5-flash",
+#     retries=2,
+#     system_prompt=(
+#         "You are supposed to pick a random player from our vector database.",
+#         "Your choice is supposed to be completely random and not biased in any way towards a certain nationality.",
+#         "Use the tool retrieve_random_player to get candidates.",
+#         "When you output the player, copy match_percent from the chosen candidate (do not invent it)."
+#     ),
+#     output_type=PlayerShowcase
+# )
+
+# @random_player_retriever.tool_plain
+# def retrieve_random_player(query: str) -> dict:
+#     result = vector_db["players"].search(query=query).to_list()
+
+#     return result
+
+
+random_player_retriever = Agent(
+    model="google-gla:gemini-2.5-flash",
+    retries=2,
+    system_prompt=(
+        "You are supposed to pick 5 random players from our vector database.",
+        "Your choice is supposed to be completely random and not biased in any way towards a certain nationality.",
+        "Use the tool retrieve_random_player to get candidates.",
+        "Return exactly 5 players in the 'players' field.",
+        "When you output each player, copy match_percent from the chosen candidate (do not invent it)."
+    ),
+    output_type=PlayerShowcaseList
+)
+
+@random_player_retriever.tool_plain
+def retrieve_random_player(query: str) -> dict:
+    # Ta en kandidatpool (t.ex. 30) så modellen kan välja 5 slumpmässigt
+    candidates = vector_db["players"].search(query=query).limit(4).to_list()
+    return {"candidates": candidates}
