@@ -1,7 +1,9 @@
 from fastapi import FastAPI
 from pydantic import BaseModel, Field
 from pydantic_ai.messages import ModelMessage
-from backend.rag import rag_agent
+from backend.rag import rag_agent, random_player_retriever
+import lancedb
+from backend.constants import VECTOR_DB_PATH
 
 
 """
@@ -20,6 +22,7 @@ class QueryRequest(BaseModel):
 
 
 app = FastAPI()
+db = lancedb.connect(uri=VECTOR_DB_PATH)
 
 @app.post("/rag/query")
 async def generate_player(request: QueryRequest):
@@ -30,3 +33,22 @@ async def generate_player(request: QueryRequest):
     chat_histories[request.session_id] = result.all_messages()
 
     return result.output
+
+
+@app.post("/retrieve_random_player")
+async def show_random_player(request: QueryRequest):
+    result = await random_player_retriever.run(request.query)
+
+    return result.output
+
+
+@app.get("/players")
+def list_players(limit: int = 50):
+    rows = db["players"].to_pandas().head(limit)
+    # return minimal
+    return {"players": rows["player_name"].tolist()}
+
+
+@app.get("/health")
+def health():
+    return {"status": "ok"}

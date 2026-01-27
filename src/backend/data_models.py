@@ -33,3 +33,13 @@ class PlayerProfile(LanceModel):
     filepath: str
     scouting_report: str = embedding_model.SourceField()
     embedding: Vector(DIM) = embedding_model.VectorField()
+
+
+class PlayerShowcase(BaseModel):
+    player_name: str = Field(description="Show players name")
+    age: int = Field(description="Show players age")
+    nationality: str = Field(description="Show players nationality")
+    position: str = Field(description="Show players position")
+    current_club: str = Field(description="Show players current club")
+    asking_price: str = Field(description="Show players asking price")
+    
