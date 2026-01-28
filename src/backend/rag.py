@@ -1,5 +1,6 @@
 from pydantic_ai import Agent
 from data_models import RagResponse, PlayerShowcase, PlayerShowcaseList
+from constants import VECTOR_DB_PATH
 from constants import VECTOR_DB_PATH 
 from dotenv import load_dotenv
 
@@ -12,7 +13,7 @@ vector_db = lancedb.connect(uri=VECTOR_DB_PATH)
 
 
 rag_agent = Agent(
-    model="google-gla:gemini-2.5-flash",
+    model="google-gla:gemini-2.5-flash-lite",
     retries=2,
     system_prompt=(
         "You are an expert in football (soccer) scouting.",

@@ -1,6 +1,10 @@
 from fastapi import FastAPI
 from pydantic import BaseModel, Field
 from pydantic_ai.messages import ModelMessage
+from rag import rag_agent, random_player_retriever
+import lancedb
+from constants import VECTOR_DB_PATH
+
 from rag import rag_agent,random_player_retriever
 from constants import VECTOR_DB_PATH
 
