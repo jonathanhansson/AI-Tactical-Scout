@@ -34,7 +34,9 @@ async def create_player_file(prompt: str):
     Preferred foot: {player.preferred_foot}
     Current club: {player.current_club}
     Asking price: {player.asking_price}
+    Negotiation space (1-5): {player.negotiation_space}
     Salary range: {player.salary_range}
+    Salary negotiation space: {player.salary_negotiation_space}
     Strengths: {', '.join(player.strengths)}
     Weaknesses: {', '.join(player.weaknesses)}
     ---------------------------------------------------------

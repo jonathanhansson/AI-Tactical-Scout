@@ -1,6 +1,7 @@
 from pydantic_ai import Agent
 from data_models import RagResponse, PlayerShowcase, PlayerShowcaseList
 from constants import VECTOR_DB_PATH
+from constants import VECTOR_DB_PATH 
 from dotenv import load_dotenv
 
 import lancedb
