@@ -5,6 +5,11 @@ from rag import rag_agent, random_player_retriever
 import lancedb
 from constants import VECTOR_DB_PATH
 
+from rag import rag_agent,random_player_retriever
+from constants import VECTOR_DB_PATH
+
+import lancedb
+
 
 """
 We import pydantic_ai.messages to be able to store
