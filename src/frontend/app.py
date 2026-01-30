@@ -1,7 +1,8 @@
 import requests
 import streamlit as st
+import os
 
-BASE_URL = "http://127.0.0.1:8000"
+BASE_URL = os.getenv("API_URL", "http://127.0.0.1:8000")
 SESSION_ID_DEFAULT = "default"
 query = st.text_input("Ask for a player: ")
 
