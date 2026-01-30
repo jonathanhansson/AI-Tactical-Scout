@@ -60,20 +60,72 @@ def retrieve_first_and_second_pick(query: str, k=2):
 
 
 random_player_retriever = Agent(
-    model="google-gla:gemini-2.5-flash",
+    model="google-gla:gemini-2.5-flash-lite",
     retries=2,
     system_prompt=(
-        "You are supposed to pick 5 random players from our vector database.",
-        "Your choice is supposed to be completely random and not biased in any way towards a certain nationality.",
-        "Use the tool retrieve_random_player to get candidates.",
-        "Return exactly 5 players in the 'players' field.",
-        "When you output each player, copy match_percent from the chosen candidate (do not invent it)."
+        "Call the tool retrieve_random_player.",
+        "Return EXACTLY the tool output as PlayerShowcaseList.",
+        "Do not invent or change any fields."
     ),
     output_type=PlayerShowcaseList
 )
 
+
 @random_player_retriever.tool_plain
 def retrieve_random_player(query: str) -> dict:
-    # Ta en kandidatpool (t.ex. 30) så modellen kan välja 5 slumpmässigt
-    candidates = vector_db["players"].search(query=query).limit(4).to_list()
-    return {"candidates": candidates}
+    # 1) Fetch a candidate pool (e.g., 30) using vector similarity search
+    rows = vector_db["players"].search(query=query).limit(30).to_list()
+
+    # If no results, return an empty list (frontend-safe)
+    if not rows:
+        return {"players": []}
+
+    # 2) Compute match_percent from LanceDB ranking signal
+    # LanceDB usually returns either:
+    # - _distance (lower is better)
+    # - _score (higher is better)
+    if "_distance" in rows[0]:
+        vals = [r["_distance"] for r in rows]
+        vmin, vmax = min(vals), max(vals)
+        
+        # Avoid division by zero if all distances are identical
+        if vmax == vmin:
+            percents = [100.0] * len(rows)
+        else:
+            # Min distance => 100%
+            percents = [round(100 * (vmax - v) / (vmax - vmin), 1) for v in vals]  # min => 100
+
+    elif "_score" in rows[0]:
+        vals = [r["_score"] for r in rows]
+        vmin, vmax = min(vals), max(vals)
+        
+        # Avoid division by zero if all scores are identical
+        if vmax == vmin:
+            percents = [100.0] * len(rows)
+        else:
+            # Max score => 100%
+            percents = [round(100 * (v - vmin) / (vmax - vmin), 1) for v in vals]  # max => 100
+
+    else:
+        # Fallback: assign decreasing percentages by rank
+        percents = [round(100 - i * 2, 1) for i in range(len(rows))]
+
+    # 3) Take top 5 (results are already sorted best->worst by search)
+    top_rows = rows[:5]
+    top_percents = percents[:5]
+
+    # 4) Build the exact response shape expected by PlayerShowcaseList
+    players = []
+    for row, mp in zip(top_rows, top_percents):
+        players.append({
+            "player_name": row.get("player_name", ""),
+            "age": row.get("age", 0),                 # om ni inte har detta i DB -> blir 0 tills ni lägger till det
+            "nationality": row.get("nationality", ""),
+            "position": row.get("position", ""),
+            "current_club": row.get("current_club", ""),
+            "asking_price": row.get("asking_price", ""),
+            "match_percent": mp,
+        })
+
+    return {"players": players}
+
