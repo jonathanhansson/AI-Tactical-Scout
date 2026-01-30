@@ -119,7 +119,7 @@ def retrieve_random_player(query: str) -> dict:
     for row, mp in zip(top_rows, top_percents):
         players.append({
             "player_name": row.get("player_name", ""),
-            "age": row.get("age", 0),                 # om ni inte har detta i DB -> blir 0 tills ni lägger till det
+            "age": row.get("age", 0),
             "nationality": row.get("nationality", ""),
             "position": row.get("position", ""),
             "current_club": row.get("current_club", ""),
@@ -128,4 +128,3 @@ def retrieve_random_player(query: str) -> dict:
         })
 
     return {"players": players}
-
