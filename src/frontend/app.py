@@ -53,10 +53,10 @@ DEFAULT_IMG = os.path.join(os.path.dirname(__file__), "default_player.png")
 if search_clicked and query.strip():
     response = requests.post(f"{BASE_URL}/retrieve_random_player", json={"query": query})
     # If backend fails, show readable message
-    if not response.headers.get("content-type", "").startswith("application/json"):
-        st.error(f"Backend did not return JSON. Status: {response.status_code}")
-        st.text(response.text[:500])
-        st.stop()
+    # if not response.headers.get("content-type", "").startswith("application/json"):
+    #     st.error(f"Backend did not return JSON. Status: {response.status_code}")
+    #     st.text(response.text[:500])
+    #     st.stop()
 
     data = response.json()
     players = data.get("players", [])
