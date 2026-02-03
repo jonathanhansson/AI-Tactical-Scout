@@ -13,7 +13,7 @@ vector_db = lancedb.connect(uri=VECTOR_DB_PATH)
 
 
 rag_agent = Agent(
-    model="google-gla:gemini-2.5-flash-lite",
+    model="google-gla:gemini-2.0-flash",
     retries=2,
     system_prompt=(
         "You are an expert in football (soccer) scouting.",
