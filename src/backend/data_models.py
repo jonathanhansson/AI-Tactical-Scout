@@ -10,7 +10,7 @@ DIM = 3072
 
 class Player(BaseModel):
     player_name: str = Field(description="This is a player name. It consists of first name and last name, e.g. Carl Johnson.")
-    age: int = Field(description="Player age must be between 30 and 49.")
+    age: int = Field(description="Player age must be between 16 and 35.")
     nationality: str = Field(description="E.g. Spain or Italy.")
     position: str = Field(description="A position on the field. You have to choose between center back, striker or goalkeeper")
     preferred_foot: str = Field(description="Two options: 1. Left 2. Right.")
