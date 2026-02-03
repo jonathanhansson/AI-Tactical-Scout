@@ -7,7 +7,7 @@ on:
     branches: 
       [ main ]
     paths:
-    - 'frontend/**'
+    - 'src/frontend/**'
     - '.github/workflows/ai-tactical-scout-frontend-AutoDeployTrigger-edb99a6e-52b7-4541-9b4a-c347b231ebca.yml'
 
   # Allow manual trigger 
