@@ -110,6 +110,7 @@ with tab1:
 
                 st.markdown("</div>", unsafe_allow_html=True)
 
+<<<<<<< HEAD
 with tab2:
     if st.button("Send question to AI scout") and query.strip() != "":
         response = requests.post(f"{BASE_URL}/rag/query", json={"query": query, "session_id": SESSION_ID_DEFAULT})
@@ -120,3 +121,13 @@ with tab2:
         st.write("Our agent recommends this player")
         st.write(llm_answer)
 
+=======
+# if st.button("Send question to AI scout") and query.strip() != "":
+#     response = requests.post(f"{BASE_URL}/rag/query", json={"query": query, "session_id": SESSION_ID_DEFAULT})
+#     data = response.json()
+
+#     llm_answer = data.get("answer")
+
+#     st.write("Our agent recommends this player")
+#     st.write(llm_answer)
+>>>>>>> 36209425fe9b599c07f0efb5bb380b478b94ad93
