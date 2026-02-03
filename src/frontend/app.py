@@ -111,6 +111,7 @@ with tab1:
                 st.markdown("</div>", unsafe_allow_html=True)
 
 with tab2:
+    query = st.text_input(" ", placeholder="I need to recruit a midfielder with good shooting...")
     if st.button("Send question to AI scout") and query.strip() != "":
         response = requests.post(f"{BASE_URL}/rag/query", json={"query": query, "session_id": SESSION_ID_DEFAULT})
         data = response.json()
