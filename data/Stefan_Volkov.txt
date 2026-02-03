@@ -1,0 +1,25 @@
+
+    SCOUTING REPORT FOR Stefan Volkov
+    ---------------------------------------------------------
+    Stefan Volkov, a 32-year-old Russian striker currently playing for FC Zenit Saint Petersburg, presents an intriguing prospect at an asking price of €15 million. Primarily a right-footed forward, Volkov’s strengths lie in his clinical finishing and aerial prowess, making him a constant threat in and around the penalty area. His 'Mentality: professional' is a significant asset, suggesting a disciplined approach to his game and a high work rate. He is a proven winner, having secured honours during his time at FC Zenit.
+
+However, Volkov does exhibit some drawbacks. His 'Weak foot' is noticeable, often limiting his attacking options when the ball is on his left. Additionally, his 'Aggression' and 'Composure' can be areas of concern, potentially leading to rash decisions or missed opportunities in critical moments of a match. On the pitch, this translates to reliable finishing with his favored foot and a strong presence in aerial duels, but he may struggle to adapt when forced onto his weaker side or under intense pressure during transitions.
+
+Volkov’s experience and goal-scoring ability make him a suitable fit for a team requiring a focal point in attack, particularly one that utilizes crosses and set pieces effectively. His mentality suggests he can integrate well into a structured squad. For a player of his age, the focus for development would be maintaining his physical condition and refining his decision-making under pressure, rather than significant technical overhauls.
+    ---------------------------------------------------------
+    PLAYER DATA
+    ---------------------------------------------------------
+    Name: Stefan Volkov
+    Age: 32
+    Nationality: Russia
+    Position: striker
+    Preferred foot: Right
+    Current club: FC Zenit Saint Petersburg
+    Asking price: €15m
+    Negotiation space (1-5): 2
+    Salary range: €60k-€80k/week
+    Salary negotiation space: 2
+    Strengths: Finishing, Heading accuracy, Mentality: professional
+    Weaknesses: Weak foot, Aggression, Composure
+    ---------------------------------------------------------
+    

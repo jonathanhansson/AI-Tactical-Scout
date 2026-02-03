@@ -1,0 +1,29 @@
+
+    SCOUTING REPORT FOR Alistair Finch
+    ---------------------------------------------------------
+    **Scouting Report: Alistair Finch**
+
+Alistair Finch, a seasoned 33-year-old Scottish center-back, currently plies his trade at Celtic FC. He embodies the classic, experienced defender, offering a robust presence at the heart of the defense. Primarily right-footed, Finch is a player whose game has evolved to rely on tactical intelligence and physical prowess where it matters most, rather than sheer athleticism.
+
+Finch’s primary strengths revolve around his exceptional **aerial dominance**. In defensive scenarios, he is an imposing figure in the box, consistently winning headers from crosses and set pieces, effectively relieving pressure on his goal. This attribute also proves valuable in attacking set-piece situations, where he presents a significant threat. Beyond his physical stature, Finch is a natural **leader** on the field. He constantly communicates with his teammates, organizing the backline and midfield in defensive transitions, displaying a clear winner mentality that has undoubtedly contributed to his extensive list of honours with Celtic FC over the years. His outstanding **positioning** is arguably his most crucial strength, allowing him to anticipate play and intercept passes, often seeming to be in the right place at the right time. This astute reading of the game is particularly evident in breaking up opposition build-up, where he expertly cuts off passing lanes and covers space, making timely interventions.
+
+However, Finch’s age does bring some inherent weaknesses, notably his **pace** and **agility**. He can struggle when exposed to quick, agile forwards, particularly in situations where opponents exploit space in behind a high defensive line during transitions. In these moments, his lack of burst speed can be a vulnerability, requiring significant cover from his full-backs or defensive midfielders. Similarly, his **agility** can be tested in tight spaces or when marking shifty attackers who change direction rapidly, making him susceptible to being bypassed by intricate dribbling. In terms of distribution, his **long passing accuracy** is a discernible weakness. While he can execute simple short passes effectively to initiate build-up, attempts at more ambitious, cross-field passes or direct balls over the top often lack the precision needed to consistently find targets, limiting his team's options for quickly breaking lines from deep positions.
+
+Given his age and profile, Finch represents a proven commodity available for an asking price of 5 million euro, with a negotiation space of 4, indicating some flexibility. His salary expectation of 40,000-60,000 euro per week, with a negotiation space of 3, aligns with a player of his experience and the stature of his current club. He would be an immediate asset to any team needing a dominant aerial presence, strong leadership, and intelligent defensive positioning, particularly in a system where his physical limitations can be mitigated by a disciplined defensive structure and complementary players. His rich vein of honours with Celtic FC speaks volumes of his winning pedigree and ability to perform at a high level.
+    ---------------------------------------------------------
+    PLAYER DATA
+    ---------------------------------------------------------
+    Name: Alistair Finch
+    Age: 33
+    Nationality: Scotland
+    Position: center back
+    Preferred foot: Right
+    Current club: Celtic FC
+    Asking price: 5 million euro
+    Negotiation space (1-5): 4
+    Salary range: 40.000-60.000 euro/week
+    Salary negotiation space: 3
+    Strengths: Aerial dominance, Leadership, Positioning
+    Weaknesses: Pace, Agility, Long passing accuracy
+    ---------------------------------------------------------
+    
