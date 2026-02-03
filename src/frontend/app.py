@@ -31,9 +31,6 @@ if st.button("Search players") and query.strip():
             st.divider()
 
 
-
-
-
 # if st.button("Send question to AI scout") and query.strip() != "":
 #     response = requests.post(f"{BASE_URL}/rag/query", json={"query": query, "session_id": SESSION_ID_DEFAULT})
 #     data = response.json()
@@ -42,4 +39,3 @@ if st.button("Search players") and query.strip():
 
 #     st.write("Our agent recommends this player")
 #     st.write(llm_answer)
-
