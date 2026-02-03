@@ -1,0 +1,33 @@
+
+    SCOUTING REPORT FOR Markus Müller
+    ---------------------------------------------------------
+    **Scouting Report: Markus Müller**
+
+**Player:** Markus Müller
+**Age:** 35
+**Club:** FC Kaiserslautern
+**Position:** Centre Back
+**Foot:** Right
+
+Markus Müller is an experienced German centre-back currently plying his trade with FC Kaiserslautern. At 35 years of age, he brings a wealth of experience to the defensive unit. His asking price of 5 million euros, with some room for negotiation, reflects his seasoned status and likely current contract situation. His wage demands are in the region of €20,000-€35,000 per week, also presenting flexibility for interested clubs.
+
+Müller's primary strengths lie in his aerial ability, tackling, and significant leadership qualities. In matches, his aerial prowess is evident in both defensive duels and set-piece situations, where he consistently wins headers. His tackling is typically robust and well-timed, often stemming dangerous attacks before they fully develop. Crucially, Müller's leadership is a defining characteristic. He is a vocal presence on the pitch, organizing the defence, encouraging teammates, and demonstrating a clear winner's mentality that can lift the entire squad. This mentality has likely contributed to past successes, including team honours and individual accolades that would have been earned throughout his career.
+
+However, Müller does exhibit certain weaknesses that must be considered. His pace is a notable limitation, which can be exploited by faster opposition forwards, particularly in transition play or when needing to recover ground. His long passing range is also not a strong suit; build-up play initiated from his distribution may often be more conservative and shorter. Furthermore, consistency can sometimes be an issue. While capable of dominant performances, there might be occasional lapses where his usual high standards are not met, potentially linked to his advanced age. These factors suggest he would be best suited to a system that offers defensive cover and prioritizes strong, experienced leadership in the heart of defence.
+    ---------------------------------------------------------
+    PLAYER DATA
+    ---------------------------------------------------------
+    Name: Markus Müller
+    Age: 35
+    Nationality: Germany
+    Position: center back
+    Preferred foot: Right
+    Current club: FC Kaiserslautern
+    Asking price: 5 million euro
+    Negotiation space (1-5): 3
+    Salary range: 20.000-35.000 euro/week
+    Salary negotiation space: 2
+    Strengths: aerial ability, tackling, leadership
+    Weaknesses: pace, long passing, consistency
+    ---------------------------------------------------------
+    
