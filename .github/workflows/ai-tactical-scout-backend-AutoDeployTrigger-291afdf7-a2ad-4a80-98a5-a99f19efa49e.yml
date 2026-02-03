@@ -7,7 +7,7 @@ on:
     branches: 
       [ main ]
     paths:
-    - '**'
+    - 'backend/**'
     - '.github/workflows/ai-tactical-scout-backend-AutoDeployTrigger-291afdf7-a2ad-4a80-98a5-a99f19efa49e.yml'
 
   # Allow manual trigger 
@@ -35,15 +35,10 @@ jobs:
         uses: azure/container-apps-deploy-action@v2
         with:
           appSourcePath: ${{ github.workspace }}/backend
-          _dockerfilePathKey_: _dockerfilePath_
-          _targetLabelKey_: _targetLabel_
+          dockerfilePath: Dockerfile
           registryUrl: aiscoutregistry2026.azurecr.io
           registryUsername: ${{ secrets.AITACTICALSCOUTBACKEND_REGISTRY_USERNAME }}
           registryPassword: ${{ secrets.AITACTICALSCOUTBACKEND_REGISTRY_PASSWORD }}
           containerAppName: ai-tactical-scout-backend
           resourceGroup: AIScoutGroup
           imageToBuild: aiscoutregistry2026.azurecr.io/ai-tactical-scout-backend:${{ github.sha }}
-          _buildArgumentsKey_: |
-            _buildArgumentsValues_
-
-
