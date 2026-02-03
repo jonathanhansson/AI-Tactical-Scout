@@ -108,9 +108,6 @@ if search_clicked and query.strip():
             st.markdown("</div>", unsafe_allow_html=True)
 
 
-
-
-
 # if st.button("Send question to AI scout") and query.strip() != "":
 #     response = requests.post(f"{BASE_URL}/rag/query", json={"query": query, "session_id": SESSION_ID_DEFAULT})
 #     data = response.json()
@@ -119,4 +116,3 @@ if search_clicked and query.strip():
 
 #     st.write("Our agent recommends this player")
 #     st.write(llm_answer)
-
