@@ -1,0 +1,6 @@
+fastapi
+uvicorn
+pydantic-ai
+lancedb
+python-dotenv
+pandas
