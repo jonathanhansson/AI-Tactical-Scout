@@ -57,7 +57,8 @@ if search_clicked and query.strip():
     #     st.error(f"Backend did not return JSON. Status: {response.status_code}")
     #     st.text(response.text[:500])
     #     st.stop()
-
+    print(response.text)
+    print(response.status_code)
     data = response.json()
     players = data.get("players", [])
 
