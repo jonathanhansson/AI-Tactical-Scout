@@ -1,11 +1,11 @@
 from fastapi import FastAPI
 from pydantic import BaseModel, Field
 from pydantic_ai.messages import ModelMessage
-from rag import rag_agent, random_player_retriever
+from rag import rag_agent, player_retriever
 import lancedb
 from constants import VECTOR_DB_PATH
 
-from rag import rag_agent,random_player_retriever
+from rag import rag_agent,player_retriever
 from constants import VECTOR_DB_PATH
 
 import lancedb
@@ -40,9 +40,9 @@ async def generate_player(request: QueryRequest):
     return result.output
 
 
-@app.post("/retrieve_random_player")
-async def show_random_player(request: QueryRequest):
-    result = await random_player_retriever.run(request.query)
+@app.post("/list_five_players")
+async def list_five_players_based_on_search(request: QueryRequest):
+    result = await player_retriever.run(request.query)
 
     return result.output
 

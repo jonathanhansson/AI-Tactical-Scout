@@ -59,7 +59,7 @@ def retrieve_first_and_second_pick(query: str, k=2):
 #     return result
 
 
-random_player_retriever = Agent(
+player_retriever = Agent(
     model="google-gla:gemini-2.5-flash-lite",
     retries=2,
     system_prompt=(
@@ -71,8 +71,8 @@ random_player_retriever = Agent(
 )
 
 
-@random_player_retriever.tool_plain
-def retrieve_random_player(query: str) -> dict:
+@player_retriever.tool_plain
+def retrieve_five_players(query: str) -> dict:
     # 1) Fetch a candidate pool (e.g., 30) using vector similarity search
     rows = vector_db["players"].search(query=query).limit(30).to_list()
 
