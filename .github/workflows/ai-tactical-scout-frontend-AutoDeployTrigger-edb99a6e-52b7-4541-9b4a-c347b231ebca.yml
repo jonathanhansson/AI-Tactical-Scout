@@ -34,7 +34,7 @@ jobs:
       - name: Build and push container image to registry
         uses: azure/container-apps-deploy-action@v2
         with:
-          appSourcePath: ${{ github.workspace }}/frontend
+          appSourcePath: ./frontend
           dockerfilePath: Dockerfile
           registryUrl: aiscoutregistry2026.azurecr.io
           registryUsername: ${{ secrets.AITACTICALSCOUTFRONTEND_REGISTRY_USERNAME }}
