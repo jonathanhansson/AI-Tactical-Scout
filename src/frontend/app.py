@@ -36,87 +36,87 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# --- Header like the mockup ---
-st.markdown("<h2 style='text-align:center; margin-bottom: 0.3rem;'>Sök efter spelare</h2>", unsafe_allow_html=True)
-st.markdown("<div class='small' style='text-align:center; margin-bottom: 1.2rem;'>Skriv en prompt och få 5 bästa matchningar</div>", unsafe_allow_html=True)
+tab1, tab2 = st.tabs(["Joakim", "Jonathan"])
 
-# --- Search bar + button in one row ---
-col_a, col_b = st.columns([5, 1])
-with col_a:
-    query = st.text_input(" ", placeholder="T.ex. Jag söker en mittfältare som är bra på tacklingar...", label_visibility="collapsed")
-with col_b:
-    search_clicked = st.button("Sök", use_container_width=True)
+with tab1:
+    # --- Header like the mockup ---
+    st.markdown("<h2 style='text-align:center; margin-bottom: 0.3rem;'>Sök efter spelare</h2>", unsafe_allow_html=True)
+    st.markdown("<div class='small' style='text-align:center; margin-bottom: 1.2rem;'>Skriv en prompt och få 5 bästa matchningar</div>", unsafe_allow_html=True)
 
-# Default image (put a file in frontend folder)
-DEFAULT_IMG = os.path.join(os.path.dirname(__file__), "default_player.png")
+    # --- Search bar + button in one row ---
+    col_a, col_b = st.columns([5, 1])
+    with col_a:
+        query = st.text_input(" ", placeholder="T.ex. Jag söker en mittfältare som är bra på tacklingar...", label_visibility="collapsed")
+    with col_b:
+        search_clicked = st.button("Sök", use_container_width=True)
 
-if search_clicked and query.strip():
-    response = requests.post(f"{BASE_URL}/retrieve_random_player", json={"query": query})
-    # If backend fails, show readable message
-    # if not response.headers.get("content-type", "").startswith("application/json"):
-    #     st.error(f"Backend did not return JSON. Status: {response.status_code}")
-    #     st.text(response.text[:500])
-    #     st.stop()
-    print(response.text)
-    print(response.status_code)
-    data = response.json()
-    players = data.get("players", [])
+    # Default image (put a file in frontend folder)
+    DEFAULT_IMG = os.path.join(os.path.dirname(__file__), "default_player.png")
 
-    if not players:
-        st.warning("No players found.")
-    else:
-        st.markdown("### Sökresultat")
+    if search_clicked and query.strip():
+        response = requests.post(f"{BASE_URL}/list_five_players", json={"query": query})
+        # If backend fails, show readable message
+        # if not response.headers.get("content-type", "").startswith("application/json"):
+        #     st.error(f"Backend did not return JSON. Status: {response.status_code}")
+        #     st.text(response.text[:500])
+        #     st.stop()
+        print(response.text)
+        print(response.status_code)
+        data = response.json()
+        players = data.get("players", [])
 
-        for i, p in enumerate(players):
-            name = p.get("player_name", "-")
-            age = p.get("age", "-")
-            pos = p.get("position", "-")
-            nat = p.get("nationality", "-")
-            club = p.get("current_club", "-")
-            price = p.get("asking_price", "-")
-            mp = float(p.get("match_percent", 0) or 0)
+        if not players:
+            st.warning("No players found.")
+        else:
+            st.markdown("### Sökresultat")
 
-            # --- Card wrapper (HTML only for the card box) ---
-            st.markdown("<div class='player-card'>", unsafe_allow_html=True)
+            for i, p in enumerate(players):
+                name = p.get("player_name", "-")
+                age = p.get("age", "-")
+                pos = p.get("position", "-")
+                nat = p.get("nationality", "-")
+                club = p.get("current_club", "-")
+                price = p.get("asking_price", "-")
+                mp = float(p.get("match_percent", 0) or 0)
 
-            left, mid, right = st.columns([1.2, 4.2, 1.4], vertical_alignment="center")
+                # --- Card wrapper (HTML only for the card box) ---
+                st.markdown("<div class='player-card'>", unsafe_allow_html=True)
 
-            with left:
-                if os.path.exists(DEFAULT_IMG):
-                    st.image(DEFAULT_IMG, width=90)
-                else:
-                    # If image file is missing, show a simple placeholder
-                    st.markdown("🧑‍💼", unsafe_allow_html=True)
+                left, mid, right = st.columns([1.2, 4.2, 1.4], vertical_alignment="center")
 
-            with mid:
-                st.markdown(f"#### {name}")
-                st.markdown(
-                    f"<div class='meta'>Ålder: <b>{age}</b> &nbsp;|&nbsp; Position: <b>{pos}</b> &nbsp;|&nbsp; Nationalitet: <b>{nat}</b></div>",
-                    unsafe_allow_html=True
-                )
-                st.markdown(
-                    f"<div class='meta'>Klubb: <b>{club}</b> &nbsp;|&nbsp; Pris: <b>{price}</b></div>",
-                    unsafe_allow_html=True
-                )
-                st.progress(min(max(int(mp), 0), 100))
-                st.markdown(f"<div class='small'>Match: <b>{mp:.1f}%</b></div>", unsafe_allow_html=True)
+                with left:
+                    if os.path.exists(DEFAULT_IMG):
+                        st.image(DEFAULT_IMG, width=90)
+                    else:
+                        # If image file is missing, show a simple placeholder
+                        st.markdown("🧑‍💼", unsafe_allow_html=True)
 
-            with right:
-                # Button does nothing yet, but is ready for later
-                st.button("Se profil", key=f"profile_{i}", use_container_width=True)
+                with mid:
+                    st.markdown(f"#### {name}")
+                    st.markdown(
+                        f"<div class='meta'>Ålder: <b>{age}</b> &nbsp;|&nbsp; Position: <b>{pos}</b> &nbsp;|&nbsp; Nationalitet: <b>{nat}</b></div>",
+                        unsafe_allow_html=True
+                    )
+                    st.markdown(
+                        f"<div class='meta'>Klubb: <b>{club}</b> &nbsp;|&nbsp; Pris: <b>{price}</b></div>",
+                        unsafe_allow_html=True
+                    )
+                    st.progress(min(max(int(mp), 0), 100))
+                    st.markdown(f"<div class='small'>Match: <b>{mp:.1f}%</b></div>", unsafe_allow_html=True)
 
-            st.markdown("</div>", unsafe_allow_html=True)
+                with right:
+                    # Button does nothing yet, but is ready for later
+                    st.button("Se profil", key=f"profile_{i}", use_container_width=True)
 
+                st.markdown("</div>", unsafe_allow_html=True)
 
+with tab2:
+    if st.button("Send question to AI scout") and query.strip() != "":
+        response = requests.post(f"{BASE_URL}/rag/query", json={"query": query, "session_id": SESSION_ID_DEFAULT})
+        data = response.json()
 
+        llm_answer = data.get("answer")
 
-
-# if st.button("Send question to AI scout") and query.strip() != "":
-#     response = requests.post(f"{BASE_URL}/rag/query", json={"query": query, "session_id": SESSION_ID_DEFAULT})
-#     data = response.json()
-
-#     llm_answer = data.get("answer")
-
-#     st.write("Our agent recommends this player")
-#     st.write(llm_answer)
+        st.write("Our agent recommends this player")
+        st.write(llm_answer)
 
