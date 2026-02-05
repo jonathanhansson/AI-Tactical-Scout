@@ -8,26 +8,16 @@ import os
 
 load_dotenv()
 
-# TESTING BUG FIX /Jonathan
-CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
+# Testing another bug fix /Jonathan
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DB_PATH = os.path.join(BASE_DIR, "knowledge_base")
 
-DB_PATH = os.path.join(CURRENT_DIR, "knowledge_base")
+vector_db = lancedb.connect(uri=DB_PATH)
 
-print("rag debug start")
-print(f"running in {CURRENT_DIR}")
-print(f"trying to connect to {DB_PATH}")
+all_tables = vector_db.table_names()
+print(f"Found tables: {all_tables}")
 
-if os.path.exists(DB_PATH):
-    print(f"the folder {DB_PATH} exists!!!")
-    print(f"content: {os.listdir(DB_PATH)}")
-else:
-    print(f"folder missing: {DB_PATH}")
-
-try:
-    vector_db = lancedb.connect(uri=DB_PATH)
-except Exception as e:
-    print(f"Crashed when 'lance_db.connect()': {e}")
-    raise e
+tbl = vector_db.open_table(all_tables[0])
 
 
 rag_agent = Agent(
@@ -47,7 +37,7 @@ rag_agent = Agent(
 def retrieve_first_and_second_pick(query: str, k=2):
     # This uses vector search
 
-    results = vector_db["players"].search(query=query).limit(k).to_list()
+    results = tbl.search(query=query).limit(k).to_list()
     top_result = results[0]
 
 
