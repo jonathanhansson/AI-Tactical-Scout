@@ -4,3 +4,4 @@ pydantic-ai
 lancedb
 python-dotenv
 pandas
+google-generativeai
