@@ -30,18 +30,26 @@ rag_agent = Agent(
 
 
 @rag_agent.tool_plain
-def retrieve_first_pick(query: str, k=1):
+def retrieve_players(query: str):
     # This uses vector search
 
-    results = vector_db["players"].search(query=query).limit(k).to_list()
-    top_result = results[0]
+    results = vector_db["players"].search(query=query).limit(5).to_list()
+    
+    if not results:
+        return "No players found."
+    
+    combined_context = "Here are the most relevant players found:\n"
 
 
-    return f"""
-    Player name: {top_result["player_name"]},
-    Filepath: {top_result["filepath"]},
-    Answer: {top_result["scouting_report"]}
-    """
+    for doc in results:
+        combined_context += f"""
+        ---
+        Player name: {doc.get("player_name", "Unknown")}
+        Report: {doc.get("scouting_report", "No report")}
+        ---
+        """
+
+    return combined_context        
 
 
 # random_player_retriever = Agent(
