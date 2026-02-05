@@ -36,7 +36,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-tab1, tab2 = st.tabs(["Joakim", "Jonathan"])
+tab1, tab2 = st.tabs(["Search", "Chat"])
 
 with tab1:
     # --- Header like the mockup ---
