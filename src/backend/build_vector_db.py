@@ -8,8 +8,12 @@ from data_models import Player, PlayerProfile
 def setup_vector_db(path):
     vector_db = lancedb.connect(uri=path)
     print("connected")
-    vector_db.create_table("players", schema=PlayerProfile, exist_ok=True)
+
+    table = vector_db.create_table("players", schema=PlayerProfile, exist_ok=True)
     print("created table")
+
+    table.create_fts_index("scouting_report", replace=True)
+    print("created fts index")
 
     return vector_db
 

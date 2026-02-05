@@ -26,7 +26,7 @@ class Player(BaseModel):
 class RagResponse(BaseModel):
     player_name: str = Field(description="The first and last name of the retrieved player.")
     filepath: str = Field(description="Name the absolute path to the retrieved file.")
-    answer: str = Field(description="Answer based on the retrieved file. Don't mention the negotiation_space or salary_negotiation_space. Rather think like this: 5: 10% negotiation, 4: 8% negotiation, 3: 6% negotiation, 2: 4%negotiation, 1: 2% negotiation")
+    answer: str = Field(description="Answer based on the retrieved file.")
 
 
 class PlayerProfile(LanceModel):

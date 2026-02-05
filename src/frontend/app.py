@@ -111,12 +111,33 @@ with tab1:
                 st.markdown("</div>", unsafe_allow_html=True)
 
 with tab2:
-    query = st.text_input(" ", placeholder="I need to recruit a midfielder with good shooting...")
-    if st.button("Send question to AI scout") and query.strip() != "":
-        response = requests.post(f"{BASE_URL}/rag/query", json={"query": query, "session_id": SESSION_ID_DEFAULT})
-        data = response.json()
+    if "messages" not in st.session_state:
+        st.session_state.messages = []
+    for msg in st.session_state.messages:
+        with st.chat_message(msg["role"]):
+            st.write(msg["content"])
 
-        llm_answer = data.get("answer")
+    if query := st.chat_input("I need to recruit a midfielder with good shooting..."):
 
-        st.write("Our agent recommends this player")
-        st.write(llm_answer)
+        with st.chat_message("user"):
+            st.write(query)
+        
+        st.session_state.messages.append({"role": "user", "content": query})
+
+        with st.spinner("AI Scout is searching our database..."):
+            try:
+                response = requests.post(f"{BASE_URL}/rag/query", json={"query": query, "session_id": SESSION_ID_DEFAULT})
+                data = response.json()
+                llm_answer = data.get("answer", "No reply.")
+
+                with st.chat_message("assistant"):
+                    st.write(llm_answer)
+
+                st.session_state.messages.append({"role": "assistant", "content": llm_answer})
+
+            except Exception as e:
+                st.error(f"ERROR: {e}")
+        
+        
+        
+        

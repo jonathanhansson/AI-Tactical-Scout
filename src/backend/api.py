@@ -5,7 +5,7 @@ from rag import rag_agent, player_retriever, retrieve_five_players
 import lancedb
 from constants import VECTOR_DB_PATH
 
-from rag import rag_agent,player_retriever
+from rag import rag_agent, player_retriever
 from constants import VECTOR_DB_PATH
 
 import lancedb

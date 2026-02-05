@@ -1,21 +1,26 @@
 from pydantic_ai import Agent
+from lancedb import rerankers
 from data_models import RagResponse, PlayerShowcase, PlayerShowcaseList
 from constants import VECTOR_DB_PATH
-from constants import VECTOR_DB_PATH 
 from dotenv import load_dotenv
 import re
 import lancedb
+import os
 
 load_dotenv()
 
 print("### USING rag.py FROM:", __file__)
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DB_PATH = os.path.join(BASE_DIR, "knowledge_base")
+
+vector_db = lancedb.connect(uri=str(DB_PATH))
+print(f"Debug: connected to {DB_PATH}. Tables: {vector_db.list_tables()}")
 
 vector_db = lancedb.connect(uri=VECTOR_DB_PATH)
 
-
 rag_agent = Agent(
-    model="google-gla:gemini-2.5-flash-lite",
+    model="google-gla:gemini-2.5-flash",
     retries=2,
     system_prompt=(
         "You are an expert in football (soccer) scouting.",
@@ -28,18 +33,65 @@ rag_agent = Agent(
 
 
 @rag_agent.tool_plain
-def retrieve_first_and_second_pick(query: str, k=2):
+def retrieve_players(query: str):
     # This uses vector search
 
-    results = vector_db["players"].search(query=query).limit(k).to_list()
-    top_result = results[0]
+    results = vector_db["players"].search(query=query).limit(5).to_list()
+    
+    if not results:
+        return "No players found."
+    
+    combined_context = "Here are the most relevant players found:\n"
 
 
-    return f"""
-    Player name: {top_result["player_name"]},
-    Filepath: {top_result["filepath"]},
-    Answer: {top_result["scouting_report"]}
+    for doc in results:
+        combined_context += f"""
+        ---
+        Player name: {doc.get("player_name", "Unknown player name")}
+        Filepath: {doc.get("filepath", "Unknown filepath")}
+        Report: {doc.get("scouting_report", "No report")}
+        ---
+        """
+
+    return combined_context  
+
+
+@rag_agent.tool_plain
+def hybrid_search_players(query: str):
     """
+    Use this tool when the user mentions SPECIFIC keywords, (e.g. nationality, specific clubs or 'left-footed')
+    combined with general traits. This uses Hybrid Search (Vector + Keywords) for higher precision. 
+    """
+
+    # This sorts the results so that the best results come out on top / Jonathan
+    reranker = rerankers.RRFReranker()
+
+    try:
+        results = vector_db["players"].search(
+            query=query,
+            query_type="hybrid",
+        ).rerank(reranker=reranker).limit(5).to_list()
+    except ValueError as e:
+        return f"ERROR: {e}"
+    
+    if not results:
+        return "No players found with hybrid search :("
+    
+    combined_context = "Here are the matches from hybrid search:\n"
+
+    for doc in results:
+        combined_context += f"""
+        ---
+        Player name: {doc.get("player_name", "Unknown player name")}
+        Filepath: {doc.get("filepath", "Unknown filepath")}
+        Report: {doc.get("scouting_report", "No report")}
+        ---
+        """
+    
+    return combined_context
+    
+
+
 
 
 # random_player_retriever = Agent(
@@ -147,3 +199,7 @@ def retrieve_five_players(query: str) -> dict:
 
     print("RETURNING PLAYERS:", len(players))
     return {"players": players}
+    return {"players": players}
+
+if __name__ == "__main__":
+    vector_db.open_table("players")
