@@ -38,12 +38,12 @@ class PlayerProfile(LanceModel):
 
 
 class PlayerShowcase(BaseModel):
-    player_name: str = Field(description="Show players name")
-    age: int = Field(description="Show players age")
-    nationality: str = Field(description="Show players nationality")
-    position: str = Field(description="Show players position")
-    current_club: str = Field(description="Show players current club")
-    asking_price: str = Field(description="Show players asking price")
+    player_name: str = Field(description="Based on the information from the scouting report")
+    age: int = Field(description="Based on the information from the scouting report")
+    nationality: str = Field(description="Based on the information from the scouting report")
+    position: str = Field(description="Based on the information from the scouting report")
+    current_club: str = Field(description="Based on the information from the scouting report")
+    asking_price: str = Field(description="Based on the information from the scouting report")
     match_percent: float = Field(description="How well the player matches the prompt (0-100)")
     
 
