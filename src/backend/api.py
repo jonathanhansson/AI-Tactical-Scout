@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from pydantic import BaseModel, Field
 from pydantic_ai.messages import ModelMessage
-from rag import rag_agent, player_retriever
+from rag import rag_agent, player_retriever, retrieve_five_players
 import lancedb
 from constants import VECTOR_DB_PATH
 
@@ -41,10 +41,9 @@ async def generate_player(request: QueryRequest):
 
 
 @app.post("/list_five_players")
-async def list_five_players_based_on_search(request: QueryRequest):
-    result = await player_retriever.run(request.query)
+def list_five_players_based_on_search(request: QueryRequest):
+    return retrieve_five_players(request.query)
 
-    return result.output
 
 
 @app.get("/players")
