@@ -1,4 +1,5 @@
 from pydantic_ai import Agent
+from lancedb import rerankers
 from data_models import RagResponse, PlayerShowcase, PlayerShowcaseList
 from constants import VECTOR_DB_PATH
 from dotenv import load_dotenv
@@ -50,7 +51,45 @@ def retrieve_players(query: str):
         ---
         """
 
-    return combined_context        
+    return combined_context  
+
+
+@rag_agent.tool_plain
+def hybrid_search_players(query: str):
+    """
+    Use this tool when the user mentions SPECIFIC keywords, (e.g. nationality, specific clubs or 'left-footed')
+    combined with general traits. This uses Hybrid Search (Vector + Keywords) for higher precision. 
+    """
+
+    # This sorts the results so that the best results come out on top / Jonathan
+    reranker = rerankers.RRFReranker()
+
+    try:
+        results = vector_db["players"].search(
+            query=query,
+            query_type="hybrid",
+        ).rerank(reranker=reranker).limit(5).to_list()
+    except ValueError as e:
+        return f"ERROR: {e}"
+    
+    if not results:
+        return "No players found with hybrid search :("
+    
+    combined_context = "Here are the matches from hybrid search:\n"
+
+    for doc in results:
+        combined_context += f"""
+        ---
+        Player name: {doc.get("player_name", "Unknown player name")}
+        Filepath: {doc.get("filepath", "Unknown filepath")}
+        Report: {doc.get("scouting_report", "No report")}
+        ---
+        """
+    
+    return combined_context
+    
+
+
 
 
 # random_player_retriever = Agent(
