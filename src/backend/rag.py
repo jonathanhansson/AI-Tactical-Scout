@@ -44,7 +44,8 @@ def retrieve_players(query: str):
     for doc in results:
         combined_context += f"""
         ---
-        Player name: {doc.get("player_name", "Unknown")}
+        Player name: {doc.get("player_name", "Unknown player name")}
+        Filepath: {doc.get("filepath", "Unknown filepath")}
         Report: {doc.get("scouting_report", "No report")}
         ---
         """
