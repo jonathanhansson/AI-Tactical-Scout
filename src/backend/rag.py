@@ -134,4 +134,4 @@ def retrieve_five_players(query: str) -> dict:
     return {"players": players}
 
 if __name__ == "__main__":
-    print(VECTOR_DB_PATH)
+    vector_db.open_table("players")
