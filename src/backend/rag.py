@@ -8,6 +8,12 @@ import os
 
 load_dotenv()
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DB_PATH = os.path.join(BASE_DIR, "knowledge_base")
+
+vector_db = lancedb.connect(uri=str(DB_PATH))
+print(f"Debug: connected to {DB_PATH}. Tables: {vector_db.list_tables()}")
+
 vector_db = lancedb.connect(uri=VECTOR_DB_PATH)
 
 rag_agent = Agent(
@@ -24,7 +30,7 @@ rag_agent = Agent(
 
 
 @rag_agent.tool_plain
-def retrieve_first_and_second_pick(query: str, k=2):
+def retrieve_first_pick(query: str, k=1):
     # This uses vector search
 
     results = vector_db["players"].search(query=query).limit(k).to_list()
@@ -126,3 +132,6 @@ def retrieve_five_players(query: str) -> dict:
         })
 
     return {"players": players}
+
+if __name__ == "__main__":
+    print(VECTOR_DB_PATH)
