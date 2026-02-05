@@ -117,10 +117,8 @@ with tab2:
         with st.chat_message(msg["role"]):
             st.write(msg["content"])
 
-    query = st.text_input(" ", placeholder="I need to recruit a midfielder with good shooting...")
-    send_button = st.button("Send question to AI scout")
+    if query := st.chat_input("I need to recruit a midfielder with good shooting..."):
 
-    if send_button and query.strip() != "":
         with st.chat_message("user"):
             st.write(query)
         
