@@ -8,7 +8,7 @@ if os.path.exists("/app"):
 else:
     DATA_PATH = CURRENT_FILE.parents[2] / "data"
 
-VECTOR_DB_PATH = Path(__file__).parent / "knowledge_base"
+VECTOR_DB_PATH = Path(__file__).parents[1] / "knowledge_base"
 
 
 if __name__ == "__main__":
