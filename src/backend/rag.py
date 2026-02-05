@@ -8,17 +8,7 @@ import os
 
 load_dotenv()
 
-# Testing another bug fix /Jonathan
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-DB_PATH = os.path.join(BASE_DIR, "knowledge_base")
-
-vector_db = lancedb.connect(uri=DB_PATH)
-
-all_tables = vector_db.table_names()
-print(f"Found tables: {all_tables}")
-
-tbl = vector_db.open_table(all_tables[0])
-
+vector_db = lancedb.connect(uri=VECTOR_DB_PATH)
 
 rag_agent = Agent(
     model="google-gla:gemini-2.5-flash",
@@ -37,7 +27,7 @@ rag_agent = Agent(
 def retrieve_first_and_second_pick(query: str, k=2):
     # This uses vector search
 
-    results = tbl.search(query=query).limit(k).to_list()
+    results = vector_db["players"].search(query=query).limit(k).to_list()
     top_result = results[0]
 
 

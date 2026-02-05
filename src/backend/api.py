@@ -27,28 +27,6 @@ class QueryRequest(BaseModel):
 
 
 app = FastAPI()
-
-import os
-
-print("--- 🕵️ DEBUG: FILESYSTEM INSPECTION START ---")
-
-# 1. Where are we currently?
-cwd = os.getcwd()
-print(f"📍 Current working directory: {cwd}")
-
-# 2. What exists here? (Listing files and folders)
-print("📂 Listing files and directories:")
-for root, dirs, files in os.walk(cwd):
-    # Print only the first 2 levels to avoid spamming the logs
-    level = root.replace(cwd, '').count(os.sep)
-    if level < 3: 
-        indent = ' ' * 4 * (level)
-        print(f'{indent}📁 {os.path.basename(root)}/')
-        for f in files:
-            print(f'{indent}    📄 {f}')
-
-print("--- 🕵️ DEBUG: FILESYSTEM INSPECTION END ---")
-
 db = lancedb.connect(uri=VECTOR_DB_PATH)
 
 @app.post("/rag/query")
