@@ -1,15 +1,33 @@
 from pydantic_ai import Agent
 from data_models import RagResponse, PlayerShowcase, PlayerShowcaseList
 from constants import VECTOR_DB_PATH
-from constants import VECTOR_DB_PATH 
 from dotenv import load_dotenv
 
 import lancedb
+import os
 
 load_dotenv()
 
+# TESTING BUG FIX /Jonathan
+CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 
-vector_db = lancedb.connect(uri=VECTOR_DB_PATH)
+DB_PATH = os.path.join(CURRENT_DIR, "knowledge_base")
+
+print("rag debug start")
+print(f"running in {CURRENT_DIR}")
+print(f"trying to connect to {DB_PATH}")
+
+if os.path.exists(DB_PATH):
+    print(f"the folder {DB_PATH} exists!!!")
+    print(f"content: {os.listdir(DB_PATH)}")
+else:
+    print(f"folder missing: {DB_PATH}")
+
+try:
+    vector_db = lancedb.connect(uri=DB_PATH)
+except Exception as e:
+    print(f"Crashed when 'lance_db.connect()': {e}")
+    raise e
 
 
 rag_agent = Agent(
