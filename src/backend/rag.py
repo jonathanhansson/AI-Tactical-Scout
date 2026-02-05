@@ -3,10 +3,12 @@ from data_models import RagResponse, PlayerShowcase, PlayerShowcaseList
 from constants import VECTOR_DB_PATH
 from constants import VECTOR_DB_PATH 
 from dotenv import load_dotenv
-
+import re
 import lancedb
 
 load_dotenv()
+
+print("### USING rag.py FROM:", __file__)
 
 
 vector_db = lancedb.connect(uri=VECTOR_DB_PATH)
@@ -59,11 +61,33 @@ def retrieve_first_and_second_pick(query: str, k=2):
 #     return result
 
 
+def extract_from_player_data(label: str, report: str, default=""):
+    """
+    Extracts 'Label: value' from the PLAYER DATA section.
+    """
+    m_section = re.search(
+        r"PLAYER DATA\s*-*\s*(.*)$",
+        report,
+        flags=re.IGNORECASE | re.DOTALL
+    )
+    if not m_section:
+        return default
+
+    section = m_section.group(1)
+
+    m_value = re.search(
+        rf"{re.escape(label)}\s*:\s*([^\n\r]+)",
+        section,
+        flags=re.IGNORECASE
+    )
+    return m_value.group(1).strip() if m_value else default
+
+
 player_retriever = Agent(
     model="google-gla:gemini-2.5-flash-lite",
     retries=2,
     system_prompt=(
-        "Call the tool retrieve_random_player.",
+        "Call the tool retrieve_five_players.",
         "Return EXACTLY the tool output as PlayerShowcaseList.",
         "Do not invent or change any fields."
     ),
@@ -73,58 +97,53 @@ player_retriever = Agent(
 
 @player_retriever.tool_plain
 def retrieve_five_players(query: str) -> dict:
-    # 1) Fetch a candidate pool (e.g., 30) using vector similarity search
     rows = vector_db["players"].search(query=query).limit(30).to_list()
+    print("TOTAL HITS FROM DB:", len(rows))
 
-    # If no results, return an empty list (frontend-safe)
     if not rows:
         return {"players": []}
 
-    # 2) Compute match_percent from LanceDB ranking signal
-    # LanceDB usually returns either:
-    # - _distance (lower is better)
-    # - _score (higher is better)
     if "_distance" in rows[0]:
         vals = [r["_distance"] for r in rows]
         vmin, vmax = min(vals), max(vals)
-        
-        # Avoid division by zero if all distances are identical
-        if vmax == vmin:
-            percents = [100.0] * len(rows)
-        else:
-            # Min distance => 100%
-            percents = [round(100 * (vmax - v) / (vmax - vmin), 1) for v in vals]  # min => 100
-
+        percents = [100.0] * len(rows) if vmax == vmin else [round(100 * (vmax - v) / (vmax - vmin), 1) for v in vals]
     elif "_score" in rows[0]:
         vals = [r["_score"] for r in rows]
         vmin, vmax = min(vals), max(vals)
-        
-        # Avoid division by zero if all scores are identical
-        if vmax == vmin:
-            percents = [100.0] * len(rows)
-        else:
-            # Max score => 100%
-            percents = [round(100 * (v - vmin) / (vmax - vmin), 1) for v in vals]  # max => 100
-
+        percents = [100.0] * len(rows) if vmax == vmin else [round(100 * (v - vmin) / (vmax - vmin), 1) for v in vals]
     else:
-        # Fallback: assign decreasing percentages by rank
         percents = [round(100 - i * 2, 1) for i in range(len(rows))]
 
-    # 3) Take top 5 (results are already sorted best->worst by search)
     top_rows = rows[:5]
     top_percents = percents[:5]
 
-    # 4) Build the exact response shape expected by PlayerShowcaseList
+    print("TOP_ROWS:", len(top_rows))
+    print("TOP_PERCENTS:", len(top_percents))
+    print("### LOOP START ###")
+
     players = []
     for row, mp in zip(top_rows, top_percents):
+        report = row.get("scouting_report", "") or ""
+
+        age_str = extract_from_player_data("Age", report, "0")
+        nationality = extract_from_player_data("Nationality", report, "")
+        position = extract_from_player_data("Position", report, "")
+        current_club = extract_from_player_data("Current club", report, "")
+        asking_price = extract_from_player_data("Asking price", report, "")
+
+        age = int(age_str) if age_str.isdigit() else 0
+
         players.append({
             "player_name": row.get("player_name", ""),
-            "age": row.get("age", 0),
-            "nationality": row.get("nationality", ""),
-            "position": row.get("position", ""),
-            "current_club": row.get("current_club", ""),
-            "asking_price": row.get("asking_price", ""),
-            "match_percent": mp,
+            "age": age,
+            "nationality": nationality,
+            "position": position,
+            "current_club": current_club,
+            "asking_price": asking_price,
+            "match_percent": float(mp),
         })
 
+        print("APPENDED:", row.get("player_name"), "len(players)=", len(players))
+
+    print("RETURNING PLAYERS:", len(players))
     return {"players": players}
