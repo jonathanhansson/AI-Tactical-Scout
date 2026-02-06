@@ -3,13 +3,13 @@ The AI Tactical Scout is an intelligent assistant for football managers and spor
 
 ### 🛠 Tech Stack
 
-| Kategori | Verktyg / Teknologi | Beskrivning |
+| Category | Tool / Technology | Description |
 | :--- | :--- | :--- |
-| **Frontend** | **Streamlit** | Interaktivt webbgränssnitt för chatten och visualisering. |
-| **Språk** | **Python 3.11+** | Huvudspråket för både backend och datahantering. |
-| **AI & LLM** | **Google Gemini** | LLM-modellen (`gemini-2.5-flash-lite`) som driver analysen. |
-| **Framework** | **Pydantic AI** | Ramverk för att bygga typsäkra AI-agenter och tools. |
-| **Databas** | **LanceDB** | Vektordatabas för att lagra och söka bland spelare (RAG). |
-| **Sökning** | **Hybrid Search** | Kombination av semantisk sökning och nyckelordssökning. |
-| **Hosting** | **Microsoft Azure** | Molnplattform där applikationen driftas (Web App). |
-| **Version** | **Git / GitHub** | Källkodshantering och CI/CD-pipeline. |
+| **Frontend** | **Streamlit** | Interactive web interface for chat and visualization. |
+| **Language** | **Python 3.11+** | Core language for both backend and data processing. |
+| **AI & LLM** | **Google Gemini** | The LLM (`gemini-2.5-flash-lite`) powering the analysis. |
+| **Framework** | **Pydantic AI** | Framework for building type-safe AI agents and tools. |
+| **Database** | **LanceDB** | Vector database for storing and retrieving player data (RAG). |
+| **Search** | **Hybrid Search** | Combination of semantic search (vector) and keyword search. |
+| **Hosting** | **Microsoft Azure** | Cloud platform hosting the application (Web App). |
+| **Version Control**| **Git / GitHub** | Source code management and CI/CD pipeline. |
